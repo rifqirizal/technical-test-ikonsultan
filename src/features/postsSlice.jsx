@@ -6,9 +6,9 @@ export const fetchPosts = createAsyncThunk("users/fetchers", async () => {
     return response.data
 })
 
-export const fetchPostsdetail = createAsyncThunk("users/fetchersdetail", async ({ id }) => {
+export const fetchPostsdetail = createAsyncThunk("users/fetchersdetail", async (id) => {
     const response = await postService.getPostDetail(id)
-    return response.data
+    return response.data[0]
 })
 
 const postsSlice = createSlice({
@@ -24,33 +24,32 @@ const postsSlice = createSlice({
         // Get Post 
         res.addCase(fetchPosts.pending, (state) => {
             state.loading = false,
-                state.error = null
+            state.error = null
         });
         res.addCase(fetchPosts.fulfilled, (state, action) => {
             state.loading = false,
-                state.posts = action.payload
+            state.posts = action.payload
             state.error = null
         });
         res.addCase(fetchPosts.rejected, (state, action) => {
             state.loading = false,
-                state.error = action.error.message
+            state.error = action.error.message
         });
 
-        // Get Detail Post
+        // Get Post Detail
         res.addCase(fetchPostsdetail.pending, (state) => {
-            state.loading = false,
-                state.error = null
+            state.loading = true;
+            state.error = null;
         });
         res.addCase(fetchPostsdetail.fulfilled, (state, action) => {
-            state.loading = false,
-                state.postDetail = action.payload
-            state.error = null
+            state.loading = false;
+            state.postDetail = action.payload;
+            state.error = null;
         });
         res.addCase(fetchPostsdetail.rejected, (state, action) => {
-            state.loading = false,
-                state.error = action.error.message
+            state.loading = false;
+            state.error = action.error.message;
         });
-
     }
 
 })
